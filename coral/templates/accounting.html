@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_content %}
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Cost</th>
+    </tr>
+    {% for date in purchaseDate %}
+    <tr>
+        <td>{{ date.purchaseDate }}</td> 
+        <td>{{ date.sum|floatformat:2 }}</td> 
+    </tr>
+    {% endfor %}
+</table>
+
+
+{% endblock %}

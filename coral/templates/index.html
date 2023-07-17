@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block page_content %}
+
+<h1>Corals</h1>
+
+<button type="button" class="btn btn-primary"> 
+    <a href="newCoral" style="color:inherit">Add Coral</a>
+</button>
+  
+<div class="row">
+    {% for coral in corals %}
+    <div class="col-md-4">
+        <div class="card mb-2">
+            <img class="card-img-top" src="{{ MEDIA_URL }}{{ coral.image.url }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ coral.name }}</h5>
+                <p class="card-text">{{ coral.description }}</p>
+                <a href="{% url 'coral_detail' coral.pk %}" class="btn btn-primary">
+                    Read More
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="pagination d-flex justify-content-center">
+    <ul class="pagination">
+      {% if corals.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ corals.previous_page_number }}">Previous</a>
+        </li>
+      {% endif %}
+  
+      <li class="page-item active">
+        <span class="page-link">{{ corals.number }} of {{ corals.paginator.num_pages }}</span>
+      </li>
+  
+      {% if corals.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ corals.next_page_number }}">Next</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_content %}
+<h1>{{ coral.name }}</h1>
+<p>
+    <a href="{% url 'coralUpdate' coral.pk %}">✍️ Edit</a>
+    <a href="{% url 'photoUpdate' coral.pk %}">✍️ Growth Photo</a>
+    <a href="{% url 'coralDelete' coral.pk %}">⛔ Delete</a>
+
+</p>
+<div class="row">
+    <div class="col-md-8">
+        <img src="{{coral.image.url}}" alt="" width="100%">
+    </div>
+    <div class="col-md-4">
+        <h5>About the coral:</h5>
+        <p>{{ coral.description }}</p>
+        <br>
+        <h5>Purchase Date:</h5>
+        <p>{{ coral.purchaseDate }}</p>
+    </div>
+</div>
+
+<div class="row">
+<h3>
+    <br></br>
+    <span class="label">Growth Photos</span>
+</h3>
+</div>
+    <div class="row">
+        
+        {% for i in images %}
+            <div class="col-md-20">
+                <div class="card mb-20">
+             
+                    <div class="card-body">
+                        <h5 class="card-title">{{ i.image_date }}</h5>
+                        <img class="card-img-top" src="{{ MEDIA_URL }}{{i.images.url}}">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+{% endblock %}

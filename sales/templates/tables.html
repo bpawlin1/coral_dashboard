@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block page_content %}
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Data Tables</h1>
+    
+   
+        <div class="row"> 
+    
+            <div class="col-xl-4 col-lg-5">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Species Sold</h6>
+                    </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Species</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in spi %}
+                                <tr>
+                                    <td>{{ a.species }}</td> 
+                                    <td>{{ a.species_amount }}</td> 
+                                
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-5">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Sale By Date</h6>
+                    
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for date in sale_date %}
+                                <tr>
+                                    <td>{{ date.sale_date }}</td> 
+                                    <td>{{ date.sum|floatformat:2 }}</td> 
+                                
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-5">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Coral Sold</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Coral Name</th>
+                                        <th scope="col">Quanity Sold</th>
+                                        <th scope="col">Sales Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for c in coral %}
+                                    <tr>
+                                        <td>{{ c.coral_name }}</td> 
+                                        <td>{{ c.coral_amount }}</td> 
+                                        <td>{{ c.coral_sum | floatformat:2 }}</td> 
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
+{% endblock %}

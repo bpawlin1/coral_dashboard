@@ -1,0 +1,11 @@
+venv
+pycache
+ENV_DIR
+sales/__pycache__
+sales/migrations
+db.sqlite3
+dashboard/__pycache__
+dashboard/migrations
+coral_tracker/__pycache__
+coral/__pycache__
+coral/migrations

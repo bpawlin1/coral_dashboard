@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+
+{% block page_content %}
+
+<div class="container-fluid">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Sales Dashboard</h1>
+    <a href="tables" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        class="fas fa-download fa-sm text-white-50"></i> Tables</a>
+    <a href="newSale" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+        class="fas fa-download fa-sm text-white-50"></i> Add Coral</a>
+    </div>
+
+<div class="row">
+          <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Total Earnings</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">${{ sales_total |floatformat:2 }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Current Year Earnings</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">${{ current_year_sales |floatformat:2 }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Count of Sold</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ coral_count  }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+</div>
+
+<div class="container">
+   
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Species Sold</h6>
+                </div>
+            
+  
+            <div class="chart-pie pt-4 pb-2">
+                
+                    <canvas id="myChart" width="400" height="200"></canvas>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script>
+                        const ctx = document.getElementById('myChart').getContext('2d');
+                        const myChart = new Chart(ctx, {
+                            type: 'pie',
+                                data: {
+                                labels : [{% for item in species_list %}"{{ item }}",{% endfor %}],
+                                  datasets: [{
+                                    label: "temp",
+                                    data : [{% for item in species_number %}{{ item }},{% endfor %}],
+                                    backgroundColor: ["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA"],
+                                    borderColor: 'rgba(0, 0, 0, 1)',
+                                    borderWidth: 2
+                                  }]
+                                    }
+                        });
+                        </script> 
+                </div>
+            </div>
+        </div>
+        
+    
+</div>
+
+
+
+
+{% endblock %}

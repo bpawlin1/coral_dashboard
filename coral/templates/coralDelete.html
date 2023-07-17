@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+
+
+{% block page_content %}
+
+
+<form method="post">{% csrf_token %}
+    <p>
+        Are you sure you want to delete
+        <em>"{{ coral.name }}"</em>
+        created on {{ coral.date_created|date:'Y-m-d' }}?
+    </p>
+    <input type="submit" value="Confirm">
+</form>
+<a href="{% url 'coral_detail' coral.pk %}">
+    <button>Cancel</button>
+</a>
+{% endblock %}
