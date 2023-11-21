@@ -48,11 +48,11 @@ def accounting(request):
         
     }
     return render(request, 'accounting.html', context)
-#@login_required
+login_required
 def index(request):
     user = request.user
     coral_name_filter = request.GET.get('coral_name', '')
-    
+    species_filter = request.GET.get('species', '')
 
     coral_queryset = Coral.objects.filter(user=request.user).order_by('name')
 
@@ -60,13 +60,13 @@ def index(request):
     if coral_name_filter:
         coral_queryset = coral_queryset.filter(name__icontains=coral_name_filter)
 
+    # Get unique species values for the dropdown
+    unique_species = Coral.objects.filter(user=request.user).values_list('species', flat=True).distinct()
 
-    coral_filter_form = CoralFilterForm(request.GET)
     # Apply the species filter if a species is selected
-   
-    if coral_filter_form.is_valid() and coral_filter_form.cleaned_data['species']:
-        coral_queryset = coral_queryset.filter(species=coral_filter_form.cleaned_data['species'])
-    
+    if species_filter:
+        coral_queryset = coral_queryset.filter(species=species_filter)
+
     paginator = Paginator(coral_queryset, per_page=12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -74,7 +74,8 @@ def index(request):
     context = {
         'corals': page_obj,
         'coral_name_filter': coral_name_filter,
-        'coral_filter_form': coral_filter_form,
+        'species_filter': species_filter,
+        'unique_species': unique_species,
     }
 
     return render(request, 'index.html', context)
