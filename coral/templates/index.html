@@ -8,7 +8,25 @@
 <button type="button" class="btn btn-primary"> 
     <a href="newCoral" style="color:inherit">Add Coral</a>
 </button>
-  
+<form method="get" action="{% url 'index' %}">
+  <!-- Search input -->
+  <label for="coral_name">Coral Name:</label>
+  <input type="text" name="coral_name" value="{{ coral_name_filter }}">
+  <button type="submit">Search</button>
+
+  <br>
+
+  <!-- Species dropdown -->
+  <label for="species">Species:</label>
+  <select name="species">
+      <option value="">All Species</option>
+      {% for coral in corals %}
+          <option value="{{ coral.species }}" {% if coral.species == species_filter %}selected{% endif %}>{{ coral.species }}</option>
+      {% endfor %}
+  </select>
+
+  <button type="submit">Filter by Species</button>
+</form>
 <div class="row">
     {% for coral in corals %}
     <div class="col-md-4">

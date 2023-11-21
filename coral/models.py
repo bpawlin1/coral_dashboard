@@ -11,6 +11,16 @@ choices = [
     ('live', 'Live'),
     ('deceased',"Deceased")
 ]
+species_Choices = [
+        ('sps', 'SPS'),
+        ('lps', 'LPS'),
+        ('softy', 'Softy'),
+        ('zoa', 'Zoa'),
+        ('Algae', 'Algae'),
+        ('Anemone', 'Anemone'),
+        ('Gorgonian', 'Gorgonian'),
+        # Add more choices as needed
+    ]
 class Coral(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
@@ -21,7 +31,7 @@ class Coral(models.Model):
     image = models.ImageField(upload_to='upload/',null=True, blank=True)
     date_created = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-
+    species = models.CharField(max_length=100, choices=species_Choices,default='sps')
     def __str__(self):
         return self.name
     

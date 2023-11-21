@@ -47,17 +47,32 @@ def accounting(request):
         
     }
     return render(request, 'accounting.html', context)
-#@login_required    
+
 def index(request):
     user = request.user
-    coral = Coral.objects.filter(user=request.user).order_by('name')
-    #coral = Coral.objects.filter(user = request.user) 
-    
-    paginator = Paginator(coral, per_page=12)
+    coral_name_filter = request.GET.get('coral_name', '')
+    species_filter = request.GET.get('species', '')
+    #coral = Coral.objects.filter(user=request.user).order_by('name')
+    coral_queryset = Coral.objects.filter(user=request.user).order_by('name')
+
+    # Apply the search filter if a search term is provided
+    if coral_name_filter:
+        coral_queryset = coral_queryset.filter(name__icontains=coral_name_filter)
+
+    # Apply the species filter if a species is selected
+    if species_filter:
+        coral_queryset = coral_queryset.filter(species=species_filter)
+
+    paginator = Paginator(coral_queryset, per_page=12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    context = {'corals': page_obj}
+    context = {
+        'corals': page_obj,
+        'coral_name_filter': coral_name_filter,
+        'species_filter': species_filter,  # Pass the filter value to the template
+    }
     return render(request, 'index.html', context)
+
 #@login_required
 def coral_detail(request, pk):
     coral = Coral.objects.get(pk=pk)
