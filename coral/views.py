@@ -51,7 +51,7 @@ def accounting(request):
 def index(request):
     user = request.user
     coral_name_filter = request.GET.get('coral_name', '')
-    species_filter = Coral.objects.all().values('species').distinct()
+    species_filter = request.GET.get('species', '')
     #coral = Coral.objects.filter(user=request.user).order_by('name')
     coral_queryset = Coral.objects.filter(user=request.user).order_by('name')
 
@@ -61,7 +61,7 @@ def index(request):
 
     # Apply the species filter if a species is selected
     if species_filter:
-        coral_queryset = coral_queryset.filter(species=species_filter).distinct()
+        coral_queryset = Coral.objects.all().values('species').distinct()
 
     paginator = Paginator(coral_queryset, per_page=12)
     page_number = request.GET.get('page')
