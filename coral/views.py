@@ -11,6 +11,7 @@ from django.views.generic import CreateView
 from django.db.models import Sum
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from .forms import CoralFilterForm
 
 # Create your views here.
 
@@ -51,7 +52,7 @@ def accounting(request):
 def index(request):
     user = request.user
     coral_name_filter = request.GET.get('coral_name', '')
-    species_filter = request.GET.get('species', '')
+    
 
     coral_queryset = Coral.objects.filter(user=request.user).order_by('name')
 
@@ -59,13 +60,13 @@ def index(request):
     if coral_name_filter:
         coral_queryset = coral_queryset.filter(name__icontains=coral_name_filter)
 
-    # Get unique values of the 'species' field from the model
-    unique_species = Coral.objects.filter(user=request.user).values_list('species', flat=True).distinct()
 
+    coral_filter_form = CoralFilterForm(request.GET)
     # Apply the species filter if a species is selected
-    if species_filter:
-        coral_queryset = coral_queryset.filter(species=species_filter)
-
+   
+    if coral_filter_form.is_valid() and coral_filter_form.cleaned_data['species']:
+        coral_queryset = coral_queryset.filter(species=coral_filter_form.cleaned_data['species'])
+    
     paginator = Paginator(coral_queryset, per_page=12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -73,8 +74,7 @@ def index(request):
     context = {
         'corals': page_obj,
         'coral_name_filter': coral_name_filter,
-        'species_filter': species_filter,
-        'unique_species': unique_species,
+        'coral_filter_form': coral_filter_form,
     }
 
     return render(request, 'index.html', context)

@@ -17,15 +17,10 @@
   <br>
 
   <!-- Species dropdown -->
-  <label for="species">Species:</label>
-  <select name="species">
-      <option value="">All Species</option>
-      {% for coral in corals %}
-          <option value="{{ coral.species }}" {% if coral.species == species_filter %}selected{% endif %}>{{ coral.species }}</option>
-      {% endfor %}
-  </select>
-
-  <button type="submit">Filter by Species</button>
+  <form method="get" action="{% url 'index' %}">
+    {{ coral_filter_form }}
+    <button type="submit">Filter</button>
+  </form>
 </form>
 <div class="row">
     {% for coral in corals %}

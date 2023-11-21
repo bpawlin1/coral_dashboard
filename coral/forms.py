@@ -28,7 +28,12 @@ class CoralForm(forms.ModelForm):
             'purchaseDate': DateInput(),
             'status': Select(),
         }
-
+class CoralFilterForm(forms.Form):
+    species = forms.ModelChoiceField(
+        queryset=Coral.objects.values_list('species', flat=True).distinct(),
+        empty_label='All Species',
+        required=False,
+    )
 
 class LoginForm(forms.Form):
     username = forms.CharField()
