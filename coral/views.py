@@ -61,7 +61,7 @@ def index(request):
 
     # Apply the species filter if a species is selected
     if species_filter:
-        coral_queryset = coral_queryset.filter(species=species_filter)
+        coral_queryset = coral_queryset.filter(species=species_filter).distinct()
 
     paginator = Paginator(coral_queryset, per_page=12)
     page_number = request.GET.get('page')
