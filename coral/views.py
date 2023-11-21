@@ -51,7 +51,7 @@ def accounting(request):
 def index(request):
     user = request.user
     coral_name_filter = request.GET.get('coral_name', '')
-    species_filter = request.GET.get('species', '')
+    species_filter = Coral.objects.all().values('species').distinct()
     #coral = Coral.objects.filter(user=request.user).order_by('name')
     coral_queryset = Coral.objects.filter(user=request.user).order_by('name')
 
