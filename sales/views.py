@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+from coral.models import Coral
 from sales.models import coral_sale
 from django.db.models import Sum
 from django.db.models import Count
@@ -28,12 +29,13 @@ def sales(request):
     today = datetime.date.today()
     labels = []
     data = []
-
+    current_year = datetime.date.today().year
     values = coral_sale.objects.filter().values('sale_date').order_by('sale_date').annotate(sum=Sum('sale_price'))
     sales_total = coral_sale.objects.all().aggregate(Sum('sale_price'))['sale_price__sum'] or 0
     current_year_sales = coral_sale.objects.all().filter(sale_date__year = today.year).aggregate(Sum('sale_price'))['sale_price__sum'] or 0
     coral_sold = coral_sale.objects.filter().values('coral_name').order_by('coral_name').annotate(coral_sum=Sum('sale_price')).annotate(coral_amount=Count('coral_name'))
-
+    current_year_bought = Coral.objects.all().filter(purchaseDate__year = today.year).aggregate(Sum('purchaseCost'))['purchaseCost__sum'] or 0
+    net_total = current_year_sales - current_year_bought
     
     coral_count = coral_sale.objects.count()
 
@@ -71,6 +73,8 @@ def sales(request):
         'sales_total' : sales_total,
         'coral_count' : coral_count,
         'current_year_sales' : current_year_sales,
+        'current_year_bought' : current_year_bought,
+        'net_total': net_total,
      
         
     }
@@ -81,4 +85,13 @@ class CreateCoralSale(SuccessMessageMixin,CreateView):  # new
     form_class = saleform
     template_name = "newSale.html"
     success_message = "Your sale was added!"
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("sales")
+
+    def form_valid(self, form):
+        # Set the user field before saving the form
+        form.instance.user = self.request.user
+
+        # Call the parent class's form_valid method to save the form
+        response = super().form_valid(form)
+
+        return response
